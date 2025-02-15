@@ -1,0 +1,15 @@
+- name: Debug Join Token
+  debug:
+    var: hostvars['lbserver1'].cluster_join_token
+
+- name: Debug Remote Addrs
+  debug:
+    var: hostvars['lbserver1']['ansible_host']
+
+- name: Join Nodes to Cluster
+  docker_swarm:
+    state: join
+    join_token: "{{ hostvars['lbserver1'].cluster_join_token }}"
+    remote_addrs: ["{{ hostvars['lbserver1']['ansible_host'] }}:2377"]
+  tags: swarm_join
+  when: "'load-balancers' in group_names and inventory_hostname != 'lbserver1'"

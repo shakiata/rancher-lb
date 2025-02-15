@@ -1,0 +1,32 @@
+---
+# Ansible Common Variables
+ssh_user: adminuser
+ansible_sudo_pass: adminpass
+ssh_cert: ~/.ssh/id_ed25519
+ssh_port: "22"
+TZ: America/Toronto
+
+# GlusterFS Variables
+glusterfs_packages:
+  - glusterfs-server
+  - glusterfs-client
+
+gluster_replica_count: 2
+
+glusterfs_nodes:
+  - 192.168.0.38
+  - 192.168.0.42
+
+gluster_volumes_paths: 
+  - /opt/swarm-volumes/nginx-lb
+  - /opt/swarm-volumes/pihole-dns
+
+gluster_volumes:
+  - name: nginx-lb
+    bricks:
+      - 192.168.0.38:/opt/swarm-volumes/nginx-lb
+      - 192.168.0.42:/opt/swarm-volumes/nginx-lb
+  - name: pihole-dns
+    bricks:
+      - 192.168.0.38:/opt/swarm-volumes/pihole-dns
+      - 192.168.0.42:/opt/swarm-volumes/pihole-dns

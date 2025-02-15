@@ -1,0 +1,17 @@
+---
+# Main playbook
+
+- name: Setup GlusterFS Persistent Storage Cluster
+  hosts: load-balancers
+  become: true
+  roles:
+    - common
+    - glusterfs-persistent-storage
+  tags: [glusterfs, common]
+
+- name: Setup Swarm Cluster
+  hosts: load-balancers
+  become: true
+  roles:
+    - docker-swarm
+  tags: swarm

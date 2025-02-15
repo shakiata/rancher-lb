@@ -1,0 +1,9 @@
+---
+- name: Probe GlusterFS peers
+  ansible.builtin.shell: |
+    gluster peer probe {{ item }}
+  loop: "{{ glusterfs_nodes }}"
+  ignore_errors: yes
+  become: true
+  when: "'load-balancers' in group_names and inventory_hostname == 'lbserver1'"
+

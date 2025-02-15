@@ -1,0 +1,3 @@
+
+- import_tasks: swarm_master.yml
+- import_tasks: swarm_join.yml

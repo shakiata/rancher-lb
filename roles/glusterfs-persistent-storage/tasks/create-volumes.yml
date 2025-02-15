@@ -1,0 +1,31 @@
+---
+
+- name: Create directories for GlusterFS Volumes
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: '0755'
+  loop: "{{ gluster_volumes_paths}}"
+
+- name: Debug GlusterFS Volume Creation Command
+  debug:
+    msg: "gluster volume create {{ item.name }} replica {{ gluster_replica_count }} transport tcp {{ item.bricks | join(' ') }}"
+  loop: "{{ gluster_volumes }}"
+
+- name: Debug Replica Count
+  debug:
+    msg: "Replica count: {{ gluster_replica_count }}"
+
+- name: Wait for Gluster Peers to Stabilize
+  pause:
+    seconds: 5
+
+- name: Create GlusterFS Volumes
+  command: >
+    gluster volume create {{ item.name }} replica {{ gluster_replica_count }} transport tcp
+    {% for brick in item.bricks %}
+      {{ brick }}
+    {% endfor %}
+    force
+  loop: "{{ gluster_volumes }}"
+  when: "'load-balancers' in group_names and inventory_hostname == 'lbserver1'"

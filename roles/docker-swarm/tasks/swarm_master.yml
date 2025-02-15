@@ -1,0 +1,26 @@
+- name: Init a new swarm with default parameters #docker swarm init
+  community.docker.docker_swarm:
+    state: present
+  when: "'load-balancers' in group_names and inventory_hostname == 'lbserver1'"
+  
+- name: Swarm Get Join Key
+  become: true
+  become_user: root
+  shell: docker swarm join-token manager --quiet
+  register: CLUSTER_JOIN_KEY
+  when: "'load-balancers' in group_names and inventory_hostname == 'lbserver1'"
+
+- name: Set fact for join key
+  set_fact:
+    cluster_join_token: "{{ CLUSTER_JOIN_KEY.stdout }}"
+  when: "'load-balancers' in group_names and inventory_hostname == 'lbserver1'"
+  
+- name: Create an external container-swarm-network
+  become: true
+  become_user: root
+  docker_network:
+    name: 'container-swarm-network'  
+    scope: swarm
+    state: present
+    driver: overlay
+  when: "'load-balancers' in group_names and inventory_hostname == 'lbserver1'"

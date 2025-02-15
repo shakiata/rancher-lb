@@ -1,0 +1,9 @@
+---
+- name: Install GlusterFS
+  import_tasks: install.yml
+
+- name: Configure GlusterFS Cluster
+  import_tasks: configure.yml
+
+- name: Create GlusterFS Volumes
+  import_tasks: create-volumes.yml

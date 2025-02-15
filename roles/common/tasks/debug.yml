@@ -1,0 +1,19 @@
+- name: Collect Server IP
+  debug:
+    msg: "{{ ansible_ssh_host }}"
+
+- name: Collect Server ARCH
+  debug: 
+      msg: '{{ansible_architecture}}'
+
+- name: Gather OS version
+  command: lsb_release -rs
+  register: OS_VERSION
+
+- name: Ensure Ubuntu version is a float
+  set_fact:
+    OS_VERSION_NUMBER: "{{ OS_VERSION.stdout | float }}"
+
+- name: Debug OS version number
+  debug:
+    msg: "The OS version number is {{ OS_VERSION_NUMBER }}"

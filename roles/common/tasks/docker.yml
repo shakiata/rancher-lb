@@ -1,0 +1,42 @@
+# Docker Install (proper way)
+- name: Install required system packages for Docker
+  apt: name={{ item }} state=latest update_cache=yes
+  loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+
+- name: Add Docker’s official GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Set up the Docker repository
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
+    state: present
+
+- name: Install Docker Engine
+  apt:
+    name: docker-ce
+    state: present
+
+- name: Install Docker SDK for Python using pip for 24.04
+  pip:
+    name: docker
+    extra_args: "--break-system-packages"
+  when: OS_VERSION_NUMBER | float > 22.04
+
+
+- name: Install Docker SDK for Python using pip for 22.04
+  pip:
+    name: docker
+  when: OS_VERSION_NUMBER | float < 24.04
+
+- name: Ensure Docker service is running
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Ensure group "docker" exists
+  ansible.builtin.group:
+    name: docker
+    state: present

@@ -1,0 +1,15 @@
+---
+# Common tasks that are prerequisites for other roles
+
+- name: Set Timezone
+  shell: timedatectl set-timezone {{TZ}}
+  
+- import_tasks: apt.yml
+- import_tasks: debug.yml
+- import_tasks: ssh_setup.yml
+- import_tasks: ufw.yml
+- import_tasks: docker.yml
+
+
+
+

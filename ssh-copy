@@ -1,0 +1,27 @@
+#!/bin/bash
+
+USER=adminuser
+NODES=(
+    "192.168.0.38"
+    "192.168.0.42"
+)
+
+# Path to the SSH key
+SSH_KEY="$HOME/.ssh/id_ed25519.pub"
+
+# Check if the SSH key exists
+if [[ ! -f "$SSH_KEY" ]]; then
+    echo "Error: SSH key $SSH_KEY not found."
+    exit 1
+fi
+
+# Copy the SSH key to each node
+for NODE in "${NODES[@]}"; do
+    echo "Copying SSH key to $NODE..."
+    ssh-copy-id -i "$SSH_KEY" "$USER@$NODE"
+    if [[ $? -eq 0 ]]; then
+        echo "Successfully copied SSH key to $NODE."
+    else
+        echo "Failed to copy SSH key to $NODE."
+    fi
+done
