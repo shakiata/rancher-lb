@@ -24,9 +24,9 @@ gluster_volumes_paths:
 gluster_volumes:
   - name: nginx-lb
     bricks:
-      - 192.168.0.38:/opt/swarm-volumes/nginx-lb
-      - 192.168.0.42:/opt/swarm-volumes/nginx-lb
+      - "{{ glusterfs_nodes[0] }}:{{ gluster_volumes_paths[0] }}"
+      - "{{ glusterfs_nodes[1] }}:{{ gluster_volumes_paths[0] }}"
   - name: pihole-dns
     bricks:
-      - 192.168.0.38:/opt/swarm-volumes/pihole-dns
-      - 192.168.0.42:/opt/swarm-volumes/pihole-dns
+      - "{{ glusterfs_nodes[0] }}:{{ gluster_volumes_paths[1] }}"
+      - "{{ glusterfs_nodes[1] }}:{{ gluster_volumes_paths[1] }}"
