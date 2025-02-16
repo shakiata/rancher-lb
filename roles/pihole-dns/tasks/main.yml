@@ -15,6 +15,12 @@
     dest: "/mnt/pihole-dns/dnsmasq.d/02-my-wildcard-dns.conf"
     mode: '0644'
 
+- name: Deploy pihole root A record configuration file
+  template:
+    src: custom.list.j2
+    dest: "/mnt/pihole-dns/pihole/custom.list"
+    mode: '0644'
+
 - name: Deploy Docker Compose file
   template:
     src: docker-compose.j2
