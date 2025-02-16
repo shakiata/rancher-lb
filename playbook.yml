@@ -24,6 +24,5 @@
   hosts: lbserver1
   become: true
   roles:
-    - nginx-load-balancer
     - pihole-dns
   tags: containers
