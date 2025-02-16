@@ -1,0 +1,41 @@
+worker_processes 4;
+worker_rlimit_nofile 40000;
+
+events {
+    worker_connections 8192;
+}
+
+stream {
+    upstream rancher_servers_http {
+        least_conn;
+        server {{ downstream_nodes[0] }}:80 max_fails=3 fail_timeout=5s;
+        server {{ downstream_nodes[1] }}:80 max_fails=3 fail_timeout=5s;
+        server {{ downstream_nodes[2] }}:80 max_fails=3 fail_timeout=5s;
+    }
+    server {
+        listen 80;
+        proxy_pass rancher_servers_http;
+    }
+
+}
+
+http {
+
+    upstream rancher_servers_https {
+        least_conn;
+        server {{ downstream_nodes[0] }}:443 max_fails=3 fail_timeout=5s;
+        server {{ downstream_nodes[1] }}:443 max_fails=3 fail_timeout=5s;
+        server {{ downstream_nodes[2] }}:443 max_fails=3 fail_timeout=5s;
+    }
+    server {
+        listen 443 ssl;
+        ssl_certificate /etc/nginx/certs/tls.crt;
+        ssl_certificate_key /etc/nginx/certs/key.key;
+        location / {
+            proxy_pass https://rancher_servers_https;
+            proxy_set_header Host {{downstream_hostname}};
+            proxy_ssl_server_name on;
+            proxy_ssl_name {{downstream_hostname}};
+        }
+    }
+}

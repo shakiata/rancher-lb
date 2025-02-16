@@ -25,4 +25,5 @@
   become: true
   roles:
     - pihole-dns
+    - nginx-load-balancer
   tags: containers

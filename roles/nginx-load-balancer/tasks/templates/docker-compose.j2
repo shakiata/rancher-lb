@@ -1,0 +1,18 @@
+---
+services:
+  nginx:
+    image: 'nginx'
+    networks:
+      - container-swarm-network
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    environment:
+      DISABLE_IPV6: 'true'
+    volumes:
+      - "/mnt/nginx-lb:/etc/nginx"
+
+networks:
+  container-swarm-network:
+    external: true
