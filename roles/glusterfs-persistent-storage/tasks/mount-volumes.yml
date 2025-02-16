@@ -1,7 +1,7 @@
 - name: Append line to /etc/fstab
   lineinfile:
     path: /etc/fstab
-    line: 'localhost:/{{ item.name }} {{ item.name }} glusterfs defaults,_netdev,backupvolfile-server=localhost 0 0'
+    line: 'localhost:/{{ item.name }} /mnt/{{ item.name }} glusterfs defaults,_netdev,backupvolfile-server=localhost 0 0'
     create: yes
   loop: "{{ gluster_volumes }}"
 
