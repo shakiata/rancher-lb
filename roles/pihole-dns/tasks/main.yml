@@ -9,12 +9,6 @@
     - "/mnt/pihole-dns/dnsmasq.d" 
     -  /opt/templates
 
-- name: SET ADMIN PASS
-  ansible.builtin.debug:
-    msg: "{{ansible_sudo_pass}}"
-  register: ADMIN_PASS
-  no_log: true
-
 - name: Deploy pihole wildcard configuration file
   template:
     src: 02-my-wildcard-dns.conf.j2

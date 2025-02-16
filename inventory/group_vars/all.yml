@@ -6,10 +6,13 @@ ssh_cert: ~/.ssh/id_ed25519
 ssh_port: "22"
 TZ: America/Toronto
 
+# Pi-hole Variables
+pihole_password: adminpass
+
 # GlusterFS Variables
 glusterfs_packages:
   - glusterfs-server
-  - glusterfs-client
+  - glusterfs-clientmh
 
 gluster_replica_count: 2
 
