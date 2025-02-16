@@ -8,6 +8,12 @@ TZ: America/Toronto
 
 # Pi-hole Variables
 pihole_password: adminpass
+downstream_hostname: rancher-dev.branconet.lan
+downstream_nodes:
+  - 192.168.0.39
+  - 192.168.0.40
+  - 192.168.0.41
+
 
 # GlusterFS Variables
 glusterfs_packages:
@@ -17,28 +23,14 @@ glusterfs_packages:
 gluster_replica_count: 2
 
 glusterfs_nodes:
-  - 192.168.0.38
-  - 192.168.0.42
+  - "{{ hostvars['lbserver1']['ansible_host'] }}"
+  - "{{ hostvars['lbserver2']['ansible_host'] }}"
 
 gluster_volumes_paths: 
-  - /opt/swarm-volumes/nginx-lb
   - /opt/swarm-volumes/pihole-dns
 
 gluster_volumes:
-  - name: nginx-lb
-    bricks:
-      - "{{ glusterfs_nodes[0] }}:{{ gluster_volumes_paths[0] }}"
-      - "{{ glusterfs_nodes[1] }}:{{ gluster_volumes_paths[0] }}"
   - name: pihole-dns
     bricks:
       - "{{ glusterfs_nodes[0] }}:{{ gluster_volumes_paths[1] }}"
       - "{{ glusterfs_nodes[1] }}:{{ gluster_volumes_paths[1] }}"
-
-
-# Load Balancer Variables
-nginx_upstream_name: rancher_nodes
-downstream_hostname: rancher-dev.branconet.lan
-downstream_nodes:
-  - 192.168.0.39
-  - 192.168.0.40
-  - 192.168.0.41
