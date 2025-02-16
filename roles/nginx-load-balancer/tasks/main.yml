@@ -1,0 +1,27 @@
+---
+- name: Ensure required directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "/mnt/nginx-lb"
+    - "/opt/templates"
+
+- name: Deploy Nginx configuration file
+  template:
+    src: nginx-conf.j2
+    dest: "/mnt/nginx-lb/nginx.conf"
+    mode: '0644'
+
+- name: Deploy Docker Compose file
+  template:
+    src: docker-compose.j2
+    dest: "/opt/templates/docker-compose.yml"
+    mode: '0644'
+  
+- name: DEPLOY CONTAINERS STACK 
+  shell: docker stack deploy -c /opt/templates/docker-compose.yml loadbalancer
+
+- name: SCALE SWARM CONTAINERS
+  shell: docker service scale loadbalancer_nginx=1

@@ -30,3 +30,12 @@ gluster_volumes:
     bricks:
       - "{{ glusterfs_nodes[0] }}:{{ gluster_volumes_paths[1] }}"
       - "{{ glusterfs_nodes[1] }}:{{ gluster_volumes_paths[1] }}"
+
+
+# Load Balancer Variables
+nginx_upstream_name: rancher_nodes
+downstream_hostname: rancher-dev.branconet.lan
+downstream_nodes:
+  - 192.168.0.39
+  - 192.168.0.40
+  - 192.168.0.41

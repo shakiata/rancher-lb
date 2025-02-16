@@ -1,0 +1,34 @@
+---
+- name: Ensure required directories exist
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "/mnt/pihole-dns/pihole"
+    - "/mnt/pihole-dns/dnsmasq.d" 
+    -  /opt/templates
+
+- name: SET ADMIN PASS
+  ansible.builtin.debug:
+    msg: "{{ansible_sudo_pass}}"
+  register: ADMIN_PASS
+  no_log: true
+
+- name: Deploy pihole wildcard configuration file
+  template:
+    src: 02-my-wildcard-dns.conf.j2
+    dest: "/mnt/pihole-dns/dnsmasq.d/02-my-wildcard-dns.conf"
+    mode: '0644'
+
+- name: Deploy Docker Compose file
+  template:
+    src: docker-compose.j2
+    dest: "/opt/templates/docker-compose.yml"
+    mode: '0644'
+  
+- name: DEPLOY CONTAINERS STACK 
+  shell: docker stack deploy -c /opt/templates/docker-compose.yml dns
+
+- name: SCALE SWARM CONTAINERS
+  shell: docker service scale dns_pihole=1

@@ -7,3 +7,6 @@
 
 - name: Create GlusterFS Volumes
   import_tasks: create-volumes.yml
+
+- name: Mount GlusterFS Volumes
+  import_tasks: mount-volumes.yml

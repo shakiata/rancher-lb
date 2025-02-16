@@ -9,9 +9,21 @@
     - glusterfs-persistent-storage
   tags: [glusterfs, common]
 
+
+
 - name: Setup Swarm Cluster
   hosts: load-balancers
   become: true
   roles:
     - docker-swarm
   tags: swarm
+
+
+
+- name: Deploy Container Worklooads
+  hosts: lbserver1
+  become: true
+  roles:
+    - nginx-load-balancer
+    - pihole-dns
+  tags: containers
