@@ -12,7 +12,7 @@ pihole_password: adminpass
 # GlusterFS Variables
 glusterfs_packages:
   - glusterfs-server
-  - glusterfs-clientmh
+  - glusterfs-client
 
 gluster_replica_count: 2
 
