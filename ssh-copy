@@ -4,6 +4,7 @@ USER=adminuser
 NODES=(
     "192.168.0.38"
     "192.168.0.42"
+    "192.168.0.43"
 )
 
 # Path to the SSH key
