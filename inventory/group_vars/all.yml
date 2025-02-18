@@ -11,6 +11,8 @@ pihole_password: adminpass
 
 # NGINX Load Balancer Variables
 downstream_hostname: rancher.diggingin.pw
+downstream_hostname_public: diggingin.pw
+downstream_hostname_internal: rancher.rke
 downstream_nodes:
   - 10.10.68.207
   - 10.10.68.208

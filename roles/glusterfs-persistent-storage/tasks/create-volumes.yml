@@ -34,3 +34,4 @@
     force
   loop: "{{ gluster_volumes }}"
   when: "'load-balancers' in group_names and inventory_hostname == 'lbserver1'"
+  ignore_errors: yes

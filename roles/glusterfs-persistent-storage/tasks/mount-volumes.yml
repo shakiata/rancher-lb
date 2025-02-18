@@ -15,7 +15,7 @@
       Requires=glusterfs-server.service
 
       [Mount]
-      What=localhost:/{{ item.name }}
+      What=localhost:/opt/{{ item.name }}
       Where=/mnt/{{ item.name }}
       Type=glusterfs
       Options=_netdev
@@ -33,7 +33,9 @@
   command: gluster volume start {{ item.name }}
   with_items: "{{ gluster_volumes }}"
   run_once: true
+  ignore_errors: yes
 
 - name: Mount GlusterFS volume
   command: mount.glusterfs localhost:/{{ item.name }} /mnt/{{ item.name }}
   loop: "{{ gluster_volumes }}"
+  ignore_errors: yes
