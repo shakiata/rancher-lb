@@ -10,7 +10,7 @@
     - "/opt/templates"
 
 - name: Generate Self Signed Certificate for NGINX
-  shell: openssl req -x509 -nodes -days 365 -newkey rsa:4096     -keyout /mnt/nginx-lb/certs/key.key     -out /mnt/nginx-lb/certs/tls.crt     -subj "/CN={{ downstream_hostname }}"
+  shell: openssl req -x509 -nodes -days 365 -newkey rsa:4096     -keyout /mnt/nginx-lb/certs/key.key     -out /mnt/nginx-lb/certs/tls.crt     -subj "/CN={{ downstream_hostname_public }}"
 
 - name: Deploy Nginx configuration file
   template:

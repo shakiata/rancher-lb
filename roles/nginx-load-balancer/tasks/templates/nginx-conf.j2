@@ -16,7 +16,6 @@ stream {
         listen 80;
         proxy_pass rancher_servers_http;
     }
-
 }
 
 http {
@@ -24,7 +23,8 @@ http {
         hostnames;
         default rancher_servers_https;  # Default backend if no match
 
-        {{ downstream_hostname }} rancher_servers_https;
+        {{ downstream_hostname_public }} rancher_servers_https;
+        {{ downstream_hostname_internal }} rancher_servers_https;  # Added internal host
     }
 
     upstream rancher_servers_https {
@@ -36,7 +36,7 @@ http {
     
     server {
         listen 443 ssl;
-        server_name *.{{ downstream_hostname }} {{ downstream_hostname }};
+        server_name *.{{ downstream_hostname_public }} {{ downstream_hostname_public }} {{ downstream_hostname_internal }};  # Added internal host
 
         ssl_certificate /etc/nginx/certs/tls.crt;
         ssl_certificate_key /etc/nginx/certs/key.key;
