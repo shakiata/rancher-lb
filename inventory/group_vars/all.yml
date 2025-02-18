@@ -12,7 +12,7 @@ pihole_password: adminpass
 
 
 # NGINX Load Balancer Variables
-downstream_hostname: rancher-dev.branconet.lan
+downstream_hostname: jtmb.cc
 downstream_nodes:
   - 192.168.0.39
   - 192.168.0.40

@@ -20,6 +20,12 @@ stream {
 }
 
 http {
+    map $host $upstream_name {
+        hostnames;
+        default rancher_servers_https;  # Default backend if no match
+
+        {{ downstream_hostname }} rancher_servers_https;
+    }
 
     upstream rancher_servers_https {
         least_conn;
@@ -27,15 +33,19 @@ http {
         server {{ downstream_nodes[1] }}:443 max_fails=3 fail_timeout=5s;
         server {{ downstream_nodes[2] }}:443 max_fails=3 fail_timeout=5s;
     }
+    
     server {
         listen 443 ssl;
+        server_name *.jtmb.cc jtmb.cc;
+
         ssl_certificate /etc/nginx/certs/tls.crt;
         ssl_certificate_key /etc/nginx/certs/key.key;
+
         location / {
-            proxy_pass https://rancher_servers_https;
-            proxy_set_header Host {{downstream_hostname}};
+            proxy_pass https://$upstream_name;
+            proxy_set_header Host $host;
             proxy_ssl_server_name on;
-            proxy_ssl_name {{downstream_hostname}};
+            proxy_ssl_name $host;
         }
     }
 }
