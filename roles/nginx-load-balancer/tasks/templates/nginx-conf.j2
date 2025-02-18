@@ -36,7 +36,7 @@ http {
     
     server {
         listen 443 ssl;
-        server_name *.jtmb.cc jtmb.cc;
+        server_name *.{{ downstream_hostname }} {{ downstream_hostname }};
 
         ssl_certificate /etc/nginx/certs/tls.crt;
         ssl_certificate_key /etc/nginx/certs/key.key;
