@@ -4,6 +4,7 @@
     line: 'localhost:/{{ item.name }} /mnt/{{ item.name }} glusterfs defaults,_netdev,backupvolfile-server=localhost 0 0'
     create: yes
   loop: "{{ gluster_volumes }}"
+  tags: [systemd, mount-volumes]
 
 - name: Create systemd mount unit file for GlusterFS
   ansible.builtin.copy:
@@ -13,6 +14,8 @@
       Description=Mount GlusterFS Volume
       After=glusterfs-server.service
       Requires=glusterfs-server.service
+      After=network-online.target glusterfs-server.service
+      Requires=network-online.target glusterfs-server.service
 
       [Mount]
       What=localhost:/opt/{{ item.name }}
@@ -20,22 +23,30 @@
       Type=glusterfs
       Options=_netdev
 
+      [Service]
+      Restart=always
+      RestartSec=10
+
       [Install]
       WantedBy=multi-user.target
     mode: '0644'
   loop: "{{ gluster_volumes }}"
+  tags: [systemd, mount-volumes]
 
 - name: Reload systemd to apply changes
   ansible.builtin.systemd:
     daemon_reload: yes
+  tags: [systemd, mount-volumes]
 
 - name: Start GlusterFS volumes
   command: gluster volume start {{ item.name }}
   with_items: "{{ gluster_volumes }}"
   run_once: true
   ignore_errors: yes
+  tags:  [mount-volumes]
 
 - name: Mount GlusterFS volume
   command: mount.glusterfs localhost:/{{ item.name }} /mnt/{{ item.name }}
   loop: "{{ gluster_volumes }}"
   ignore_errors: yes
+  tags:  [mount-volumes]

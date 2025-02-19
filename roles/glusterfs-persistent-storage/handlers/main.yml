@@ -1,6 +1,0 @@
----
-- name: Restart GlusterFS
-  ansible.builtin.service:
-    name: glusterd
-    state: restarted
-  become: true
