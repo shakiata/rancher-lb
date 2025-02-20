@@ -14,18 +14,12 @@
       Description=Mount GlusterFS Volume
       After=glusterfs-server.service
       Requires=glusterfs-server.service
-      After=network-online.target glusterfs-server.service
-      Requires=network-online.target glusterfs-server.service
 
       [Mount]
       What=localhost:/opt/{{ item.name }}
       Where=/mnt/{{ item.name }}
       Type=glusterfs
       Options=_netdev
-
-      [Service]
-      Restart=always
-      RestartSec=10
 
       [Install]
       WantedBy=multi-user.target
