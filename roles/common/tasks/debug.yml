@@ -2,10 +2,6 @@
   debug:
     msg: "{{ ansible_ssh_host }}"
 
-- name: Collect Server ARCH
-  debug: 
-      msg: '{{ansible_architecture}}'
-
 - name: Gather OS version
   command: lsb_release -rs
   register: OS_VERSION

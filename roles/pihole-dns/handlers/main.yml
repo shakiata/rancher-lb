@@ -1,0 +1,4 @@
+---
+- name: Restart Pihole DNS
+  shell: docker service update dns_pihole --force
+  become: true
