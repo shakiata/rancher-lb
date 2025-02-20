@@ -1,7 +1,7 @@
 ---
 # Ansible Common Variables
-ssh_user: shak
-ansible_sudo_pass: familyguy
+ssh_user: no
+ansible_sudo_pass: no
 ssh_cert: ~/.ssh/id_rsa
 ssh_port: "22"
 TZ: America/Toronto
@@ -10,9 +10,9 @@ TZ: America/Toronto
 pihole_password: adminpass
 
 # NGINX Load Balancer Variables
-downstream_hostname: rancher.diggingin.pw
-downstream_hostname_public: rancher.diggingin.pw
-downstream_hostname_internal: rancher.rke
+downstream_hostname: example.domaine.com
+downstream_hostname_public: domaine.com
+downstream_hostname_internal: internal
 downstream_nodes:
   - 10.10.68.207
   - 10.10.68.208
