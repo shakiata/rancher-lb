@@ -32,4 +32,4 @@
 
 - name: Scale Pihole DNS service
   shell: docker service scale dns_pihole=1
-  # notify: Restart Pihole DNS
+  notify: Restart Pihole DNS

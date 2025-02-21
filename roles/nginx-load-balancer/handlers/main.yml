@@ -1,4 +1,0 @@
----
-- name: Restart Load Balancer
-  shell: docker service update loadbalancer_nginx --force
-  become: true

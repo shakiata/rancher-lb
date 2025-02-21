@@ -1,7 +1,4 @@
 <h1 align="center">
-  <a href="https://github.com/ansible-glusterfs-swarm">
-    <img src="https://www.svgrepo.com/show/354115/nginx.svg" alt="Logo" width="" height="100">
-  </a>
     <a href="https://github.com/ansible-glusterfs-swarm">
     <img src="https://static-00.iconduck.com/assets.00/pihole-icon-1393x2048-dld9kbl1.png" alt="Logo" width="" height="120">
   </a>
@@ -15,7 +12,7 @@
 </h1>
 
 <div align="center">
-  <b>Rancher-LB</b> - Highly Available Swarm + GlusterFS Cluster with NGINX Load Balancer and Pi-hole DNS to serve your rancher instance. (and downstream applications)
+  <b>Rancher-LB</b> - Highly Available DNS | Swarm + GlusterFS Cluster and Pi-hole DNS.
   <br />
   <br />
   <a href="https://github.com/ansible-glusterfs-swarm/issues/new?assignees=&labels=bug&title=bug%3A+">Report a Bug</a>
@@ -44,11 +41,10 @@ summary>Table of Contents</summary>
 
 # About
 
-This repository contains Ansible playbooks to set up a highly available loadbalancer/ DNS cluster:
+This repository contains Ansible playbooks to set up a highly available RoundRobbin DNS cluster:
 
 - GlusterFS
 - Docker Swarm
-- NGINX Load Balancer
 - Round Robbin Pi-hole DNS pointing at swarm nodes
 - Wildcard DNS
 
@@ -133,6 +129,7 @@ Update the centralized variables in [`inventory/group_vars/all.yml`](inventory/g
 
 ```yaml
 ---
+---
 # Ansible Common Variables
 ssh_user: adminuser
 ansible_sudo_pass: adminpass
@@ -142,12 +139,10 @@ TZ: America/Toronto
 
 # Pi-hole Variables
 pihole_password: adminpass
-
-# NGINX Load Balancer Variables
-downstream_hostname_public: jtmb.cc
-downstream_hostname_internal: rancher-dev.branconet.lan
+pihole_image_tag: "2024.07.0"
+hostname: branconet.lan
 downstream_nodes:
-  - 192.168.0.39
+  - 192.168.0.39 
   - 192.168.0.40
   - 192.168.0.41
 
@@ -163,20 +158,15 @@ glusterfs_nodes:
   - "{{ hostvars['lbserver3']['ansible_host'] }}"
 
 gluster_volumes_paths: 
-  - /opt/swarm-volumes/nginx-lb
   - /opt/swarm-volumes/pihole-dns
 
 gluster_volumes:
-  - name: nginx-lb
-    bricks:
-      - "{{ glusterfs_nodes[0] }}:{{ gluster_volumes_paths[0] }}"
-      - "{{ glusterfs_nodes[1] }}:{{ gluster_volumes_paths[0] }}"
-      - "{{ glusterfs_nodes[2] }}:{{ gluster_volumes_paths[0] }}"
   - name: pihole-dns
     bricks:
       - "{{ glusterfs_nodes[0] }}:{{ gluster_volumes_paths[1] }}"
       - "{{ glusterfs_nodes[1] }}:{{ gluster_volumes_paths[1] }}"
       - "{{ glusterfs_nodes[2] }}:{{ gluster_volumes_paths[1] }}"
+      
 ```
 
 ### Running the Playbook

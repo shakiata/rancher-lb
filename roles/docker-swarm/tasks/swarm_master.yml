@@ -24,3 +24,13 @@
     state: present
     driver: overlay
   when: "'load-balancers' in group_names and inventory_hostname == 'lbserver1'"
+
+- name: Create an external cloudflare-tunnel-network
+  become: true
+  become_user: root
+  docker_network:
+    name: 'cloudflare-tunnel-network'  
+    scope: swarm
+    state: present
+    driver: overlay
+  when: "'load-balancers' in group_names and inventory_hostname == 'lbserver1'"

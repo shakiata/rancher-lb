@@ -6,19 +6,14 @@ ssh_cert: ~/.ssh/id_ed25519
 ssh_port: "22"
 TZ: America/Toronto
 
-
 # Pi-hole Variables
 pihole_password: adminpass
-
-
-# NGINX Load Balancer Variables
-downstream_hostname_public: jtmb.cc
-downstream_hostname_internal: rancher-dev.branconet.lan
+pihole_image_tag: "2024.07.0"
+hostname: branconet.lan
 downstream_nodes:
-  - 192.168.0.39
+  - 192.168.0.39 
   - 192.168.0.40
   - 192.168.0.41
-
 
 # GlusterFS Variables
 glusterfs_packages:
@@ -32,15 +27,9 @@ glusterfs_nodes:
   - "{{ hostvars['lbserver3']['ansible_host'] }}"
 
 gluster_volumes_paths: 
-  - /opt/swarm-volumes/nginx-lb
   - /opt/swarm-volumes/pihole-dns
 
 gluster_volumes:
-  - name: nginx-lb
-    bricks:
-      - "{{ glusterfs_nodes[0] }}:{{ gluster_volumes_paths[0] }}"
-      - "{{ glusterfs_nodes[1] }}:{{ gluster_volumes_paths[0] }}"
-      - "{{ glusterfs_nodes[2] }}:{{ gluster_volumes_paths[0] }}"
   - name: pihole-dns
     bricks:
       - "{{ glusterfs_nodes[0] }}:{{ gluster_volumes_paths[1] }}"
