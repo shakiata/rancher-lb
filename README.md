@@ -12,7 +12,7 @@
 </h1>
 
 <div align="center">
-  <b>Rancher-LB</b> - Highly Available DNS | Swarm + GlusterFS Cluster and Pi-hole DNS.
+  <b>ha-pihole-dns</b> - Highly Available DNS | Swarm + GlusterFS Cluster and Pi-hole DNS.
   <br />
   <br />
   <a href="https://github.com/ansible-glusterfs-swarm/issues/new?assignees=&labels=bug&title=bug%3A+">Report a Bug</a>
